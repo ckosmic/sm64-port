@@ -1,5 +1,8 @@
 #ifdef USE_SYSTEM_MALLOC
 #include <stdlib.h>
+#ifdef TARGET_GX
+#include <malloc.h>
+#endif
 #endif
 #include <PR/ultratypes.h>
 
@@ -93,7 +96,11 @@ struct Object *try_allocate_object(struct ObjectNode *destList, struct ObjectNod
         destList->prev = nextObj;
     } else {
 #ifdef USE_SYSTEM_MALLOC
+#ifdef TARGET_GX
+        nextObj = (struct ObjectNode *) memalign(32, sizeof(struct Object));
+#else
         nextObj = (struct ObjectNode *) malloc(sizeof(struct Object));
+#endif
         if (nextObj == NULL) {
             abort();
         }

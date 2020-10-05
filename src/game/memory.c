@@ -4,6 +4,9 @@
 #endif
 #ifdef USE_SYSTEM_MALLOC
 #include <stdlib.h>
+#ifdef TARGET_GX
+#include <malloc.h>
+#endif
 #endif
 
 #include "sm64.h"
@@ -181,7 +184,11 @@ void main_pool_init(void *start, void *end) {
 
 #ifdef USE_SYSTEM_MALLOC
 void *main_pool_alloc(u32 size, void (*releaseHandler)(void *addr)) {
+#ifdef TARGET_GX
+    struct MainPoolBlock *newListHead = (struct MainPoolBlock *) memalign(32, sizeof(struct MainPoolBlock) + size);
+#else
     struct MainPoolBlock *newListHead = (struct MainPoolBlock *) malloc(sizeof(struct MainPoolBlock) + size);
+#endif
     if (newListHead == NULL) {
         abort();
     }
@@ -528,7 +535,11 @@ void *alloc_only_pool_alloc(struct AllocOnlyPool *pool, s32 size) {
         if (nextSize < s) {
             nextSize = s;
         }
+#ifdef TARGET_GX
+        block = (struct AllocOnlyPoolBlock *) memalign(32, sizeof(struct AllocOnlyPoolBlock) + nextSize);
+#else
         block = (struct AllocOnlyPoolBlock *) malloc(sizeof(struct AllocOnlyPoolBlock) + nextSize);
+#endif
         if (block == NULL) {
             abort();
         }
