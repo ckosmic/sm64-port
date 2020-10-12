@@ -26,6 +26,9 @@
 #define ALIGN4(val) (((val) + 0x3) & ~0x3)
 #define ALIGN8(val) (((val) + 0x7) & ~0x7)
 #define ALIGN16(val) (((val) + 0xF) & ~0xF)
+#ifdef TARGET_GX
+#define ALIGN32(val) (((val) + 0x1F) & ~0x1F)
+#endif
 
 struct MainPoolState {
 #ifndef USE_SYSTEM_MALLOC
@@ -185,6 +188,7 @@ void main_pool_init(void *start, void *end) {
 #ifdef USE_SYSTEM_MALLOC
 void *main_pool_alloc(u32 size, void (*releaseHandler)(void *addr)) {
 #ifdef TARGET_GX
+    size = ALIGN32(size);
     struct MainPoolBlock *newListHead = (struct MainPoolBlock *) memalign(32, sizeof(struct MainPoolBlock) + size);
 #else
     struct MainPoolBlock *newListHead = (struct MainPoolBlock *) malloc(sizeof(struct MainPoolBlock) + size);
@@ -536,6 +540,7 @@ void *alloc_only_pool_alloc(struct AllocOnlyPool *pool, s32 size) {
             nextSize = s;
         }
 #ifdef TARGET_GX
+        nextSize = ALIGN32(nextSize);
         block = (struct AllocOnlyPoolBlock *) memalign(32, sizeof(struct AllocOnlyPoolBlock) + nextSize);
 #else
         block = (struct AllocOnlyPoolBlock *) malloc(sizeof(struct AllocOnlyPoolBlock) + nextSize);
