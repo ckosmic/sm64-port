@@ -72,6 +72,26 @@ static void controller_wii_read(OSContPad *pad)
         pad->stick_x = data.nunchuk.js.pos.x - data.nunchuk.js.center.x;
         pad->stick_y = data.nunchuk.js.pos.y - data.nunchuk.js.center.y;
     }
+    else if (data.type == WPAD_EXP_CLASSIC)
+    {
+        pad->stick_x = 2.0f * (data.classic.ljs.pos.x - data.classic.ljs.center.x);
+        pad->stick_y = 2.0f * (data.classic.ljs.pos.y - data.classic.ljs.center.y);
+
+        bool inverted_look = false;
+        s8 deadzone = 10;
+
+        s8 ssx = data.classic.rjs.pos.x - data.classic.rjs.center.x;
+        s8 ssy = data.classic.rjs.pos.y - data.classic.rjs.center.y;
+
+        if (ssx > deadzone)
+            pad->button |= inverted_look ? L_CBUTTONS : R_CBUTTONS;
+        if (ssx < -deadzone)
+            pad->button |= inverted_look ? R_CBUTTONS : L_CBUTTONS;
+        if (ssy > deadzone)
+            pad->button |= inverted_look ? D_CBUTTONS : U_CBUTTONS;
+        if (ssy < -deadzone)
+            pad->button |= inverted_look ? U_CBUTTONS : D_CBUTTONS;
+    }
 }
 
 struct ControllerAPI controller_wii = {
