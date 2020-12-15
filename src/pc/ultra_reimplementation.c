@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <sys/time.h>
 #include "lib/src/libultra_internal.h"
 #include "macros.h"
 
@@ -75,7 +76,9 @@ void osViSwapBuffer(UNUSED void *vaddr) {
 }
 
 OSTime osGetTime(void) {
-    return 0;
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (unsigned long)tv.tv_sec * 1000000 + tv.tv_usec;
 }
 
 void osWritebackDCacheAll(void) {

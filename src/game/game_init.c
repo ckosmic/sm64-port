@@ -65,6 +65,29 @@ struct DemoInput *gCurrDemoInput = NULL; // demo input sequence
 u16 gDemoInputListID = 0;
 struct DemoInput gRecordedDemoInput = { 0 }; // possibly removed in EU. TODO: Check
 
+static OSTime gLastOSTime = 0;
+static u8 gRenderFPS = FALSE;
+
+static void render_fps(void) {
+    // Toggle rendering framerate with the L button.
+    if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        gRenderFPS ^= 1;
+    }
+
+#ifdef _60FPS_PATCH
+    float multiplier = 2.0f;
+#else
+    float multiplier = 1.0f;
+#endif
+    if (gRenderFPS) {
+        OSTime newTime = osGetTime();
+        float fps = multiplier * 1000000.0f / (newTime - gLastOSTime);
+
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), 184, "FPS %d", fps);
+        gLastOSTime = newTime;
+    }
+}
+
 /**
  * Initializes the Reality Display Processor (RDP).
  * This function initializes settings such as texture filtering mode,
@@ -670,7 +693,7 @@ void game_loop_one_iteration(void) {
 #endif
 #endif
         display_and_vsync();
-
+        render_fps();
         // when debug info is enabled, print the "BUF %d" information.
         if (gShowDebugText) {
             // subtract the end of the gfx pool with the display list to obtain the

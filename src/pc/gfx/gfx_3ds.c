@@ -17,6 +17,7 @@ Gfx3DSMode gGfx3DSMode;
 
 bool gShowConfigMenu = false;
 bool gShouldRun = true;
+bool gUpdateSliderFlag = false;
 
 static u8 n3ds_model = 0;
 
@@ -161,6 +162,8 @@ static void gfx_3ds_get_dimensions(uint32_t *width, uint32_t *height)
 static int debounce;
 static void gfx_3ds_handle_events(void)
 {
+    float prevSliderLevel = gSliderLevel;
+
     // as good a time as any
     gSliderLevel = osGet3DSliderState();
 
@@ -194,6 +197,19 @@ static void gfx_3ds_handle_events(void)
             // screen tapped so show menu
             gShowConfigMenu = true;
         }
+    }
+    
+    float st = 0.0;
+    if((prevSliderLevel > st && gSliderLevel <= st) || (prevSliderLevel <= st && gSliderLevel > st)) {
+		if(gSliderLevel > st) {
+			gfx_config.useAA = false;
+			gfx_config.useWide = false;
+		} else {
+			gfx_config.useAA = true;
+			gfx_config.useWide = true;
+		}
+		deinitialise_screens();
+        initialise_screens();
     }
 }
 

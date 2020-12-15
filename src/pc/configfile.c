@@ -52,8 +52,8 @@ unsigned int configKeyStickDown  = 0x1F;
 unsigned int configKeyStickLeft  = 0x1E;
 unsigned int configKeyStickRight = 0x20;
 #else
-unsigned int configKeyA          = KEY_A | KEY_Y;
-unsigned int configKeyB          = KEY_B | KEY_X;
+unsigned int configKeyA          = KEY_B | KEY_Y;
+unsigned int configKeyB          = KEY_A | KEY_X;
 unsigned int configKeyStart      = KEY_START;
 unsigned int configKeyL          = KEY_SELECT;
 unsigned int configKeyR          = KEY_L;
