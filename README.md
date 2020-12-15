@@ -34,7 +34,7 @@ After building, either install the `.cia` if you made one, or copy over the `sm6
   - [Linux / WSL (Ubuntu 18.04 or higher)](#linux--wsl-ubuntu)
   - [Windows (MSYS2)](#windows-msys2)
 
-Visit the [wiki](https://github.com/mkst/sm64-port/wiki) for information on converting the `.3dsx` to `.cia` via WSL/MSYS2.
+Visit the [wiki](https://github.com/ckosmic/sm64-port/wiki) for information on converting the `.3dsx` to `.cia` via WSL/MSYS2.
 
 ### Docker
 
@@ -43,7 +43,7 @@ The following assumes a basic understanding of [Docker](https://www.docker.com/)
 **Clone Repository:**
 
 ```sh
-git clone https://github.com/mkst/sm64-port.git
+git clone https://github.com/ckosmic/sm64-port.git
 ```
 
 **Navigate into freshly checked out repo:**
@@ -103,7 +103,7 @@ exit
 
 cd
 
-git clone https://github.com/mkst/sm64-port.git
+git clone https://github.com/ckosmic/sm64-port.git
 
 cd sm64-port
 
@@ -199,7 +199,7 @@ export DEVKITPPC=/opt/devkitpro/devkitPPC && echo "OK!"
 **Clone Repository:**
 
 ```sh
-git clone https://github.com/mkst/sm64-port.git
+git clone https://github.com/ckosmic/sm64-port.git
 ```
 
 **Navigate into freshly checked out repo:**
