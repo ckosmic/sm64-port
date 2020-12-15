@@ -108,6 +108,18 @@ static void initialise_screens()
     // consoleInit(GFX_BOTTOM, NULL);
 }
 
+static void gfx_3ds_update_stereoscopy(void) {
+	if(gSliderLevel > 0.0) {
+		gfx_config.useAA = false;
+		gfx_config.useWide = false;
+	} else {
+		gfx_config.useAA = true;
+		gfx_config.useWide = true;
+	}
+	deinitialise_screens();
+    initialise_screens();
+}
+
 static void gfx_3ds_init(UNUSED const char *game_name, UNUSED bool start_in_fullscreen)
 {
     if (checkN3DS())
@@ -128,6 +140,8 @@ static void gfx_3ds_init(UNUSED const char *game_name, UNUSED bool start_in_full
     gfx_3ds_menu_init();
 
     initialise_screens();
+    gSliderLevel = osGet3DSliderState();
+    gfx_3ds_update_stereoscopy();
 }
 
 static void gfx_set_keyboard_callbacks(UNUSED bool (*on_key_down)(int scancode), UNUSED bool (*on_key_up)(int scancode), UNUSED void (*on_all_keys_up)(void))
@@ -201,15 +215,7 @@ static void gfx_3ds_handle_events(void)
     
     float st = 0.0;
     if((prevSliderLevel > st && gSliderLevel <= st) || (prevSliderLevel <= st && gSliderLevel > st)) {
-		if(gSliderLevel > st) {
-			gfx_config.useAA = false;
-			gfx_config.useWide = false;
-		} else {
-			gfx_config.useAA = true;
-			gfx_config.useWide = true;
-		}
-		deinitialise_screens();
-        initialise_screens();
+		gfx_3ds_update_stereoscopy();
     }
 }
 
