@@ -6,7 +6,7 @@ A prior copy of the game is required to extract the assets.
 ## Changes vs. Vanilla 3DS Port
 
  - Based off [Refresh 11](https://github.com/sm64-port/sm64-port/commit/9214dddabcce4723d9b6cda2ebccbac209f6447d)
- - Stereo 3D support; use the mini-menu to switch between 3D (400px) and 800px modes
+ - Stereo 3D support; use the 3D slider to switch between 3D and 2D modes
  - Multi-threaded; audio thread runs on Core 1 on O3DS and Core 2 on N3DS; needs [Luma v10.1.1](https://github.com/LumaTeam/Luma3DS/releases) or higher
  - Naïve frame-skip if frame takes longer than 33.3ms (1 / 30 FPS) to render
      - Disable by building with `DISABLE_N3DS_FRAMESKIP=1`
